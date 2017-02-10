@@ -256,15 +256,15 @@ def main(argv = None):
         pruning_number = int(pruning_number)
         if (pruning_number == 0):
             weights_mask = {
-                'cov1': np.ones([5, 5, NUM_CHANNELS, 32]),
-                'cov2': np.ones([5, 5, 32, 64]),
-                'fc1': np.ones([IMAGE_SIZE // 4 * IMAGE_SIZE // 4 * 64, 1024]),
-                'fc2': np.ones([1024, NUM_LABELS])
+                'cov1': np.ones([5, 5, NUM_CHANNELS, 20]),
+                'cov2': np.ones([5, 5, 20, 50]),
+                'fc1': np.ones([4 * 4 * 50, 500]),
+                'fc2': np.ones([500, NUM_LABELS])
             }
             biases_mask = {
-                'cov1': np.ones([32]),
-                'cov2': np.ones([64]),
-                'fc1': np.ones([1024]),
+                'cov1': np.ones([20]),
+                'cov2': np.ones([50]),
+                'fc1': np.ones([500]),
                 'fc2': np.ones([10])
             }
         else:
