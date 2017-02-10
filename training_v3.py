@@ -104,24 +104,24 @@ def conv_network(x, weights, biases, keep_prob):
     conv = tf.nn.conv2d(x,
                         weights['cov1'],
                         strides = [1,1,1,1],
-                        padding = 'SAME')
+                        padding = 'VALID')
     relu = tf.nn.relu(tf.nn.bias_add(conv, biases['cov1']))
     pool = tf.nn.max_pool(
             relu,
             ksize = [1 ,2 ,2 ,1],
             strides = [1, 2, 2, 1],
-            padding = 'SAME')
+            padding = 'VALID')
 
     conv = tf.nn.conv2d(pool,
                         weights['cov2'],
                         strides = [1,1,1,1],
-                        padding = 'SAME')
+                        padding = 'VALID')
     relu = tf.nn.relu(tf.nn.bias_add(conv, biases['cov2']))
     pool = tf.nn.max_pool(
             relu,
             ksize = [1 ,2 ,2 ,1],
             strides = [1, 2, 2, 1],
-            padding = 'SAME')
+            padding = 'VALID')
     '''get pool shape'''
     pool_shape = pool.get_shape().as_list()
     reshape = tf.reshape(
