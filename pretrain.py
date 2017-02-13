@@ -6,12 +6,12 @@ np.set_printoptions(precision=128)
 # open_file_name = 'weights_log/weights10.pkl'
 # open_file_name = 'weights_log/weights_quan'+'.pkl'
 # open_file_name = 'weights1'+'.pkl'
-# open_file_name = 'weights_log/pcov99pfc99'+'.pkl'
-open_file_name = 'weights_log/weights10.pkl'
+open_file_name = 'weights_log/pcov90pfc90'+'.pkl'
+# open_file_name = 'weights_log/weights2.pkl'
 Test = True;
 # Test = False;
-# MASK_GEN = True
-MASK_GEN = False
+MASK_GEN = True
+# MASK_GEN = False
 sess = tf.InteractiveSession()
 mnist = input_data.read_data_sets("MNIST.data/", one_hot = True)
 
@@ -39,10 +39,12 @@ def mask_gen():
     }
     keys = ['cov1', 'cov2', 'fc1', 'fc2']
     masks = {}
+    b_masks = {}
     for key in keys:
         masks[key] = weights[key] != 0
+        b_masks[key] = biases[key] != 0
     with open('mask.pkl', 'wb') as f:
-        pickle.dump(masks,f)
+        pickle.dump((masks, b_masks),f)
 
 
 
@@ -199,7 +201,7 @@ predict = y_conv.eval({x: mnist.test.images[:64],
                                     keep_prob: 1.0})
 print('-'*79)
 print("View the contents in conv1 layer")
-print(W_fc2.eval())
+print(np.shape(W_fc2.eval()))
 real = mnist.test.labels[:64]
 print('-'*79)
 print("Neural Network's preditiion of 64 images in the test set")

@@ -17,6 +17,7 @@ class Usage(Exception):
     def __init__ (self,msg):
         self.msg = msg
 
+TRAIN = True 
 # Parameters
 learning_rate = 1e-4
 training_epochs = 100
@@ -260,8 +261,22 @@ def main(argv = None):
         pruning_cov = int(pruning_cov)
         pruning_fc = int(pruning_fc)
 
-        with open('mask.pkl','rb') as f:
-            (weights_mask,biases_mask) = pickle.load(f)
+        if (TRAIN == True):
+            with open('mask.pkl','rb') as f:
+                (weights_mask,biases_mask) = pickle.load(f)
+        else:
+            weights_mask = {
+                'cov1': np.ones([5, 5, NUM_CHANNELS, 20]),
+                'cov2': np.ones([5, 5, 20, 50]),
+                'fc1': np.ones([4 * 4 * 50, 500]),
+                'fc2': np.ones([500, NUM_LABELS])
+            }
+            biases_mask = {
+                'cov1': np.ones([20]),
+                'cov2': np.ones([50]),
+                'fc1': np.ones([500]),
+                'fc2': np.ones([10])
+            }
 
         mnist = input_data.read_data_sets("MNIST.data/", one_hot = True)
         # tf Graph input
@@ -331,69 +346,72 @@ def main(argv = None):
             c = 0
             train_accuracy = 0
 
-            print('Training starts ...')
-            for epoch in range(training_epochs):
-                avg_cost = 0.
-                total_batch = int(mnist.train.num_examples/batch_size)
-                # Loop over all batches
-                for i in range(total_batch):
-                    # execute a pruning
-                    batch_x, batch_y = mnist.train.next_batch(batch_size)
-                    _ = sess.run(train_step, feed_dict = {
-                            x: batch_x,
-                            y: batch_y,
-                            keep_prob: dropout})
-                    training_cnt = training_cnt + 1
-                    if (training_cnt % 10 == 0):
-                        [c, train_accuracy] = sess.run([cost, accuracy], feed_dict = {
-                            x: batch_x,
-                            y: batch_y,
-                            keep_prob: 1.})
-                        accuracy_list = np.concatenate((np.array([train_accuracy]),accuracy_list[0:29]))
-                        accuracy_mean = np.mean(accuracy_list)
-                        print('Epoch is {}, pruning number are {},{}'.format(epoch, pruning_cov, pruning_fc))
-                        print('accuracy mean is {}'.format(accuracy_mean))
-                        if (training_cnt % 100 == 0):
-                            weights_info(training_cnt, c, train_accuracy, accuracy_mean)
-                    # if (training_cnt == 10):
-                    if (accuracy_mean > 0.999 or epoch > 50):
-                        print('Training ends')
-                        test_accuracy = accuracy.eval({
-                                x: mnist.test.images[:],
-                                y: mnist.test.labels[:],
+            if (TRAIN == True):
+                print('Training starts ...')
+                for epoch in range(training_epochs):
+                    avg_cost = 0.
+                    total_batch = int(mnist.train.num_examples/batch_size)
+                    # Loop over all batches
+                    for i in range(total_batch):
+                        # execute a pruning
+                        batch_x, batch_y = mnist.train.next_batch(batch_size)
+                        _ = sess.run(train_step, feed_dict = {
+                                x: batch_x,
+                                y: batch_y,
+                                keep_prob: dropout})
+                        training_cnt = training_cnt + 1
+                        if (training_cnt % 10 == 0):
+                            [c, train_accuracy] = sess.run([cost, accuracy], feed_dict = {
+                                x: batch_x,
+                                y: batch_y,
                                 keep_prob: 1.})
-                        print('test accuracy is {}'.format(test_accuracy))
-                        if (test_accuracy > 0.99 or epoch >50):
-                            file_name = 'weights_log/'+'pcov'+str(pruning_cov)+'pfc'+str(pruning_fc)+'.pkl'
-                            with open(file_name, 'wb') as f:
-                                pickle.dump((
-                                    weights['cov1'].eval(),
-                                    weights['cov2'].eval(),
-                                    weights['fc1'].eval(),
-                                    weights['fc2'].eval(),
-                                    biases['cov1'].eval(),
-                                    biases['cov2'].eval(),
-                                    biases['fc1'].eval(),
-                                    biases['fc2'].eval()),f)
-                            prune_weights(pruning_cov, pruning_fc, weights, weights_mask, biases, biases_mask)
-                            mask_info(weights_mask)
-                            return test_accuracy
-                        else:
-                            pass
-                    with open('log/data0118.txt',"a") as output_file:
-                		output_file.write("{},{},{}\n".format(training_cnt,train_accuracy, c))
-                    # Compute average loss
-                    avg_cost += c / total_batch
-                # Display logs per epoch step
-                print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(avg_cost))
-
-            print("Optimization Finished!")
-            # Test model
-            correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
-            # Calculate accuracy
-            accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
-            test_accuracy = accuracy.eval({x: mnist.test.images, y: mnist.test.labels})
-            print("Accuracy:", test_accuracy)
+                            accuracy_list = np.concatenate((np.array([train_accuracy]),accuracy_list[0:29]))
+                            accuracy_mean = np.mean(accuracy_list)
+                            print('Epoch is {}, pruning number are {},{}'.format(epoch, pruning_cov, pruning_fc))
+                            print('accuracy mean is {}'.format(accuracy_mean))
+                            if (training_cnt % 100 == 0):
+                                weights_info(training_cnt, c, train_accuracy, accuracy_mean)
+                        # if (training_cnt == 10):
+                        if (accuracy_mean > 0.999 or epoch > 50):
+                            print('Training ends')
+                            test_accuracy = accuracy.eval({
+                                    x: mnist.test.images[:],
+                                    y: mnist.test.labels[:],
+                                    keep_prob: 1.})
+                            print('test accuracy is {}'.format(test_accuracy))
+                            if (test_accuracy > 0.99 or epoch >50):
+                                file_name = 'weights_log/'+'pcov'+str(pruning_cov)+'pfc'+str(pruning_fc)+'.pkl'
+                                with open(file_name, 'wb') as f:
+                                    pickle.dump((
+                                        weights['cov1'].eval(),
+                                        weights['cov2'].eval(),
+                                        weights['fc1'].eval(),
+                                        weights['fc2'].eval(),
+                                        biases['cov1'].eval(),
+                                        biases['cov2'].eval(),
+                                        biases['fc1'].eval(),
+                                        biases['fc2'].eval()),f)
+                                prune_weights(pruning_cov, pruning_fc, weights, weights_mask, biases, biases_mask)
+                                mask_info(weights_mask)
+                                return test_accuracy
+                            else:
+                                pass
+                        with open('log/data0118.txt',"a") as output_file:
+                    		output_file.write("{},{},{}\n".format(training_cnt,train_accuracy, c))
+                        # Compute average loss
+                        avg_cost += c / total_batch
+                    # Display logs per epoch step
+                    print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(avg_cost))
+                print("Optimization Finished!")
+                # Test model
+                correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
+            if (TRAIN == False):
+                # Calculate accuracy
+                accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
+                test_accuracy = accuracy.eval({x: mnist.test.images, y: mnist.test.labels, keep_prob : 1.0})
+                print("Accuracy:", test_accuracy)
+                with open('acc_log_10.txt','a') as f:
+                    f.write(str(test_accuracy)+'\n')
     except Usage, err:
         print >> sys.stderr, err.msg
         print >> sys.stderr, "for help use --help"

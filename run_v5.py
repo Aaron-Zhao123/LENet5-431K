@@ -15,8 +15,8 @@ pfc = 90
 retrain = 0
 model_tag = 'pcov'+str(pcov)+'pfc'+str(pfc)
 while (count < 10):
-    pcov = pcov+1
     pfc = pfc+1
+    pcov = pcov+1
     param = [
     ('-pcov',pcov),
     ('-pfc',pfc),

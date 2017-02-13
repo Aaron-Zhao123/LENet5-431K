@@ -20,10 +20,11 @@ while (count < 10):
         ('-tfc2',0.15)]
     acc = training_v3.main(param)
     print (acc)
-    if (acc >= 0.99 or retrain >=3):
-        acc_list.append(acc)
-        retrain = 0
-        count = count + 1
-    else:
-        retrain += 1
+    count = count + 1
+    # if (acc >= 0.99 or retrain >=3):
+    #     acc_list.append(acc)
+    #     retrain = 0
+    #     count = count + 1
+    # else:
+    #     retrain += 1
 print('accuracy summary: {}'.format(acc_list))
