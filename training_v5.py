@@ -17,10 +17,10 @@ class Usage(Exception):
     def __init__ (self,msg):
         self.msg = msg
 
-TRAIN = True 
+TRAIN = True
 # Parameters
 learning_rate = 1e-4
-training_epochs = 100
+training_epochs = 200
 batch_size = 128
 display_step = 1
 
@@ -379,7 +379,7 @@ def main(argv = None):
                                     y: mnist.test.labels[:],
                                     keep_prob: 1.})
                             print('test accuracy is {}'.format(test_accuracy))
-                            if (test_accuracy > 0.99 or epoch >50):
+                            if (test_accuracy > 0.9935 or epoch >50):
                                 file_name = 'weights_log/'+'pcov'+str(pruning_cov)+'pfc'+str(pruning_fc)+'.pkl'
                                 with open(file_name, 'wb') as f:
                                     pickle.dump((
