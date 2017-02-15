@@ -20,7 +20,7 @@ class Usage(Exception):
 TRAIN = False
 # Parameters
 learning_rate = 1e-4
-training_epochs = 100
+training_epochs = 200
 batch_size = 128
 display_step = 1
 
@@ -377,7 +377,7 @@ def main(argv = None):
                                     y: mnist.test.labels[:],
                                     keep_prob: 1.})
                             print('test accuracy is {}'.format(test_accuracy))
-                            if (test_accuracy >= 0.99 or pruning_number == 0):
+                            if (test_accuracy >= 0.9935 or pruning_number == 0):
                                 file_name = 'weights_log/weights'+str(pruning_number+1)+'.pkl'
                             else:
                                 file_name = 'weights_log/weights'+str(pruning_number)+'.pkl'
