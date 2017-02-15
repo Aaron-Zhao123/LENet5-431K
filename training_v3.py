@@ -367,6 +367,8 @@ def main(argv = None):
                         # if (training_cnt == 10):
                         if (accuracy_mean > 0.999 or epoch > 190 or pruning_number == 0):
                             print('Speculate Training')
+                            accuracy_list = np.zeros(30)
+                            print('Reset my acc list')
                             # saver.save(sess, "tmp_20160126/model")
                             # plot_weights(weights, 'after_training'+ str(pruning_number))
                             test_accuracy = accuracy.eval({
