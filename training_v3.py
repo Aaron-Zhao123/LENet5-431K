@@ -365,9 +365,10 @@ def main(argv = None):
                             if (training_cnt % 100 == 0):
                                 weights_info(training_cnt, c, train_accuracy, accuracy_mean)
                         # if (training_cnt == 10):
-                        if (accuracy_mean > 0.999 or epoch > 190 or pruning_number == 0):
+                        if (accuracy_mean > 0.999 or epoch > 80 or pruning_number == 0):
                             print('Speculate Training')
                             accuracy_list = np.zeros(30)
+                            accuracy_mean = 0
                             print('Reset my acc list')
                             # saver.save(sess, "tmp_20160126/model")
                             # plot_weights(weights, 'after_training'+ str(pruning_number))
@@ -376,7 +377,7 @@ def main(argv = None):
                                     y: mnist.test.labels[:],
                                     keep_prob: 1.})
                             print('test accuracy is {}'.format(test_accuracy))
-                            if (test_accuracy >= 0.9932 or pruning_number == 0 or epoch > 190):
+                            if (test_accuracy >= 0.9932 or pruning_number == 0 or epoch > 80):
                                 file_name = 'weights_log/weights'+str(pruning_number+1)+'.pkl'
                                 with open('weights_log/weights'+str(pruning_number+1)+'.pkl','wb') as f:
                                     pickle.dump((
