@@ -365,37 +365,31 @@ def main(argv = None):
                             if (training_cnt % 100 == 0):
                                 weights_info(training_cnt, c, train_accuracy, accuracy_mean)
                         # if (training_cnt == 10):
-                        if (accuracy_mean > 0.999 or epoch > 100 or pruning_number == 0):
-                            print('Training ends')
+                        if (accuracy_mean > 0.999 or epoch > 190 or pruning_number == 0):
+                            print('Speculate Training')
                             # saver.save(sess, "tmp_20160126/model")
-
                             # plot_weights(weights, 'after_training'+ str(pruning_number))
-                            print("saving model ...")
                             test_accuracy = accuracy.eval({
                                     x: mnist.test.images[:],
                                     y: mnist.test.labels[:],
                                     keep_prob: 1.})
                             print('test accuracy is {}'.format(test_accuracy))
-                            if (test_accuracy >= 0.9935 or pruning_number == 0):
+                            if (test_accuracy >= 0.9932 or pruning_number == 0 or epoch > 190):
                                 file_name = 'weights_log/weights'+str(pruning_number+1)+'.pkl'
-                            else:
-                                file_name = 'weights_log/weights'+str(pruning_number)+'.pkl'
-                            with open('weights_log/weights'+str(pruning_number+1)+'.pkl','wb') as f:
-                                pickle.dump((
-                                    weights['cov1'].eval(),
-                                    weights['cov2'].eval(),
-                                    weights['fc1'].eval(),
-                                    weights['fc2'].eval(),
-                                    biases['cov1'].eval(),
-                                    biases['cov2'].eval(),
-                                    biases['fc1'].eval(),
-                                    biases['fc2'].eval(),
-                                ),f)
-                            if (test_accuracy >= 0.99 or pruning_number == 0):
+                                with open('weights_log/weights'+str(pruning_number+1)+'.pkl','wb') as f:
+                                    pickle.dump((
+                                        weights['cov1'].eval(),
+                                        weights['cov2'].eval(),
+                                        weights['fc1'].eval(),
+                                        weights['fc2'].eval(),
+                                        biases['cov1'].eval(),
+                                        biases['cov2'].eval(),
+                                        biases['fc1'].eval(),
+                                        biases['fc2'].eval(),
+                                    ),f)
                                 prune_weights(pruning_number, threshold, weights, weights_mask, biases, biases_mask)
-
-                            mask_info(weights_mask, biases_mask)
-                            return test_accuracy
+                                mask_info(weights_mask, biases_mask)
+                                return test_accuracy
                         with open('log/data0118.txt',"a") as output_file:
                     		output_file.write("{},{},{}\n".format(training_cnt,train_accuracy, c))
                         # Compute average loss

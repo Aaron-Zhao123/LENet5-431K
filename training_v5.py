@@ -379,7 +379,7 @@ def main(argv = None):
                                     y: mnist.test.labels[:],
                                     keep_prob: 1.})
                             print('test accuracy is {}'.format(test_accuracy))
-                            if (test_accuracy > 0.9935 or epoch >50):
+                            if (test_accuracy > 0.9935 or epoch >198):
                                 file_name = 'weights_log/'+'pcov'+str(pruning_cov)+'pfc'+str(pruning_fc)+'.pkl'
                                 with open(file_name, 'wb') as f:
                                     pickle.dump((
