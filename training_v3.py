@@ -17,8 +17,7 @@ class Usage(Exception):
     def __init__ (self,msg):
         self.msg = msg
 
-TRAIN = False
-# Parameters
+TRAIN = True# Parameters
 learning_rate = 1e-4
 training_epochs = 200
 batch_size = 128
