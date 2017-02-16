@@ -16,6 +16,7 @@ pcov2 = 93
 pfc2 = 93
 retrain = 4
 model_tag = 'pcov'+str(pcov)+'pcov'+str(pcov2)+'pfc'+str(pfc)+'pfc'+str(pfc2)
+pfc = pfc+1
 param = [
 ('-pcov',pcov),
 ('-pcov2',pcov2),
