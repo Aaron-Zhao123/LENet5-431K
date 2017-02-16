@@ -17,7 +17,6 @@ class Usage(Exception):
     def __init__ (self,msg):
         self.msg = msg
 
-TRAIN = True
 # Parameters
 learning_rate = 1e-4
 training_epochs = 200
@@ -257,6 +256,8 @@ def main(argv = None):
                 'fc1' : 1,
                 'fc2' : 1
             }
+            PRUNE_ONLY = False
+            TRAIN = True
             for item in opts:
                 print (item)
                 opt = item[0]
@@ -271,6 +272,10 @@ def main(argv = None):
                     pruning_fc2 = val
                 if (opt == '-m'):
                     model_number = val
+                if (opt == '-ponly'):
+                    PRUNE_ONLY = val
+                if (opt == '-test'):
+                    TRAIN = val
             print('pruning percentage for cov and fc are {},{}'.format(pruning_cov, pruning_fc))
             print('threshold values:',threshold)
         except getopt.error, msg:
@@ -429,6 +434,9 @@ def main(argv = None):
                 # Test model
                 correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
             if (TRAIN == False):
+                if (PRUNE_ONLY == True):
+                    prune_weights(pruning_cov, pruning_cov2, pruning_fc, pruning_fc2, weights, weights_mask, biases, biases_mask)
+                    mask_info(weights_mask)
                 # Calculate accuracy
                 accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
                 test_accuracy = accuracy.eval({x: mnist.test.images, y: mnist.test.labels, keep_prob : 1.0})

@@ -11,13 +11,25 @@ import training_v6
 acc_list = []
 count = 0
 pcov = 93
-pfc = 99
+pfc = 98
 pcov2 = 93
 pfc2 = 93
 retrain = 4
 model_tag = 'pcov'+str(pcov)+'pcov'+str(pcov2)+'pfc'+str(pfc)+'pfc'+str(pfc2)
+pfc = pfc+1
+param = [
+('-pcov',pcov),
+('-pcov2',pcov2),
+('-pfc',pfc),
+('-pfc2',pfc2),
+('-m',model_tag),
+('-ponly', True),
+('-test', True)
+]
+acc = training_v6.main(param)
+model_tag = 'pcov'+str(pcov)+'pcov'+str(pcov2)+'pfc'+str(pfc)+'pfc'+str(pfc2)
 while (count < 2):
-    # pfc = pfc+1
+    pfc = pfc+1
     param = [
     ('-pcov',pcov),
     ('-pcov2',pcov2),
