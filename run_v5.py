@@ -12,16 +12,16 @@ acc_list = []
 count = 4
 pcov = 94
 pfc = 94
-retrain = 0
+retrain = 4
 model_tag = 'pcov'+str(pcov)+'pfc'+str(pfc)
 while (count < 10):
-    pfc = pfc+1
-    pcov = pcov+1
     param = [
     ('-pcov',pcov),
     ('-pfc',pfc),
     ('-m',model_tag)
     ]
+    pfc = pfc+1
+    pcov = pcov+1
     acc = training_v5.main(param)
     model_tag = 'pcov'+str(pcov)+'pfc'+str(pfc)
     acc_list.append(acc)
