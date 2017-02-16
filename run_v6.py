@@ -9,14 +9,14 @@ import training_v6
 # os.system('python training_v3.py -p5')
 
 acc_list = []
-count = 4
+count = 0
 pcov = 93
-pfc = 93
+pfc = 99
 pcov2 = 93
 pfc2 = 93
 retrain = 4
 model_tag = 'pcov'+str(pcov)+'pcov'+str(pcov2)+'pfc'+str(pfc)+'pfc'+str(pfc2)
-while (count < 10):
+while (count < 1):
     pfc = pfc+1
     param = [
     ('-pcov',pcov),
