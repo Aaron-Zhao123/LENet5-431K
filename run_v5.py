@@ -9,9 +9,9 @@ import training_v5
 # os.system('python training_v3.py -p5')
 
 acc_list = []
-count = 0
-pcov = 90
-pfc = 90
+count = 4
+pcov = 94
+pfc = 94
 retrain = 0
 model_tag = 'pcov'+str(pcov)+'pfc'+str(pfc)
 while (count < 10):
