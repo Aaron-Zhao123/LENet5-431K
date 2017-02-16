@@ -25,7 +25,7 @@ while (count < 10):
     ('-m',model_tag)
     ]
     pfc = pfc+1
-    acc = training_v5.main(param)
+    acc = training_v6.main(param)
     model_tag = 'pcov'+str(pcov)+'pfc'+str(pfc)
     acc_list.append(acc)
     count = count + 1
