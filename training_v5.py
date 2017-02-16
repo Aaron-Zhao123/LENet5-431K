@@ -372,7 +372,7 @@ def main(argv = None):
                                 print('Epoch is {}, pruning number are {},{}'.format(epoch, pruning_cov, pruning_fc))
                                 weights_info(training_cnt, c, train_accuracy, accuracy_mean)
                         # if (training_cnt == 10):
-                        if (accuracy_mean > 0.999 or epoch > 190):
+                        if (accuracy_mean > 0.999 or epoch > 80):
                             accuracy_list = np.zeros(30)
                             accuracy_mean = 0
                             print('Training ends')
@@ -381,7 +381,7 @@ def main(argv = None):
                                     y: mnist.test.labels[:],
                                     keep_prob: 1.})
                             print('test accuracy is {}'.format(test_accuracy))
-                            if (test_accuracy > 0.9935 or epoch > 190):
+                            if (test_accuracy > 0.9935 or epoch > 80):
                                 file_name = 'weights_log/'+'pcov'+str(pruning_cov)+'pfc'+str(pruning_fc)+'.pkl'
                                 with open(file_name, 'wb') as f:
                                     pickle.dump((
