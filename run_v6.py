@@ -24,7 +24,7 @@ param = [
 ('-pfc2',pfc2),
 ('-m',model_tag),
 ('-ponly', True),
-('-test', True)
+('-test', False)
 ]
 acc = training_v6.main(param)
 model_tag = 'pcov'+str(pcov)+'pcov'+str(pcov2)+'pfc'+str(pfc)+'pfc'+str(pfc2)
