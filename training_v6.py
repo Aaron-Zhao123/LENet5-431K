@@ -402,7 +402,7 @@ def main(argv = None):
                                     y: mnist.test.labels[:],
                                     keep_prob: 1.})
                             print('test accuracy is {}'.format(test_accuracy))
-                            if (test_accuracy > 0.990 or epoch > 80):
+                            if (test_accuracy > 0.991 or epoch > 80):
                                 file_name = 'weights_log_asyn/'+'pcov'+str(pruning_cov)+'pcov'+str(pruning_cov2)+'pfc'+str(pruning_fc)+ 'pfc'+ str(pruning_fc2)+'.pkl'
                                 with open(file_name, 'wb') as f:
                                     pickle.dump((
