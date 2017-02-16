@@ -246,11 +246,11 @@ def main(argv = None):
                 print (item)
                 opt = item[0]
                 val = item[1]
-                if (opt == '-pcov1'):
+                if (opt == '-pcov'):
                     pruning_cov = val
                 if (opt == '-pcov2'):
                     pruning_cov2 = val
-                if (opt == '-pfc1'):
+                if (opt == '-pfc'):
                     pruning_fc = val
                 if (opt == '-pfc2'):
                     pruning_fc2 = val
@@ -376,7 +376,7 @@ def main(argv = None):
                                 print('Epoch is {}, pruning number are {},{}'.format(epoch, pruning_cov, pruning_fc))
                                 weights_info(training_cnt, c, train_accuracy, accuracy_mean)
                         # if (training_cnt == 10):
-                        if (accuracy_mean > 0.999 or epoch > 50):
+                        if (accuracy_mean > 0.995 or epoch > 50):
                             accuracy_list = np.zeros(30)
                             accuracy_mean = 0
                             print('Training ends')
@@ -385,7 +385,7 @@ def main(argv = None):
                                     y: mnist.test.labels[:],
                                     keep_prob: 1.})
                             print('test accuracy is {}'.format(test_accuracy))
-                            if (test_accuracy > 0.991 or epoch > 50):
+                            if (test_accuracy > 0.990 or epoch > 50):
                                 file_name = 'weights_log/'+'pcov'+str(pruning_cov)+'pfc'+str(pruning_fc)+'.pkl'
                                 with open(file_name, 'wb') as f:
                                     pickle.dump((
