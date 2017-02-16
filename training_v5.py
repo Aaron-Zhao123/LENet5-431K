@@ -246,10 +246,14 @@ def main(argv = None):
                 print (item)
                 opt = item[0]
                 val = item[1]
-                if (opt == '-pcov'):
+                if (opt == '-pcov1'):
                     pruning_cov = val
-                if (opt == '-pfc'):
+                if (opt == '-pcov2'):
+                    pruning_cov2 = val
+                if (opt == '-pfc1'):
                     pruning_fc = val
+                if (opt == '-pfc2'):
+                    pruning_fc2 = val
                 if (opt == '-m'):
                     model_number = val
             print('pruning percentage for cov and fc are {},{}'.format(pruning_cov, pruning_fc))
