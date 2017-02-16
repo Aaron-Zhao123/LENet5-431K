@@ -277,7 +277,7 @@ def main(argv = None):
                 if (opt == '-test'):
                     TRAIN = val
             print('pruning percentage for cov and fc are {},{}'.format(pruning_cov, pruning_fc))
-            print('threshold values:',threshold)
+            print('Train values:',TRAIN)
         except getopt.error, msg:
             raise Usage(msg)
 
