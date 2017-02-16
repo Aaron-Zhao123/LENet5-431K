@@ -26,7 +26,7 @@ while (count < 10):
     ]
     pfc = pfc+1
     acc = training_v6.main(param)
-    model_tag = 'pcov'+str(pcov)+'pfc'+str(pfc)
+    model_tag = 'pcov'+str(pcov)+'pcov'+str(pcov2)+'pfc'+str(pfc)+'pfc'+str(pfc2)
     acc_list.append(acc)
     count = count + 1
     if (acc < 0.985):
