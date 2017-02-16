@@ -156,7 +156,7 @@ def prune_weights(pruning_cov, pruning_cov2, pruning_fc, pruning_fc2, weights, w
             weight_mask[key] = np.abs(weight) > next_threshold[key]
             b_threshold[key] = np.percentile(np.abs(biase),pruning_cov)
             biases_mask[key] = np.abs(biase) > b_threshold[key]
-        if (key == "cov2")
+        if (key == "cov2"):
             weight = weights[key].eval()
             biase = biases[key].eval()
             next_threshold[key] = np.percentile(np.abs(weight),pruning_cov2)
