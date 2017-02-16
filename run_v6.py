@@ -17,6 +17,7 @@ pfc2 = 93
 retrain = 4
 model_tag = 'pcov'+str(pcov)+'pcov'+str(pcov2)+'pfc'+str(pfc)+'pfc'+str(pfc2)
 while (count < 10):
+    pfc = pfc+1
     param = [
     ('-pcov',pcov),
     ('-pcov2',pcov2),
@@ -24,7 +25,6 @@ while (count < 10):
     ('-pfc2',pfc2),
     ('-m',model_tag)
     ]
-    pfc = pfc+1
     acc = training_v6.main(param)
     model_tag = 'pcov'+str(pcov)+'pcov'+str(pcov2)+'pfc'+str(pfc)+'pfc'+str(pfc2)
     acc_list.append(acc)
