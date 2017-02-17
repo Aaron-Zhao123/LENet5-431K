@@ -26,22 +26,34 @@ pfc2 = 91
 # ('-test', False)
 # ]
 # acc = training_v6.main(param)
+retrain = 0
+lr = 1e-4
 model_tag = 'pcov'+str(pcov)+'pcov'+str(pcov2)+'pfc'+str(pfc)+'pfc'+str(pfc2)
 while (count < 10):
     pfc = pfc+1
+    if (retrain == 0):
+        lr = 1e-4
     param = [
     ('-pcov',pcov),
     ('-pcov2',pcov2),
     ('-pfc',pfc),
     ('-pfc2',pfc2),
-    ('-m',model_tag)
+    ('-m',model_tag),
+    ('-lr',lr)
     ]
     acc = training_v6.main(param)
     model_tag = 'pcov'+str(pcov)+'pcov'+str(pcov2)+'pfc'+str(pfc)+'pfc'+str(pfc2)
     acc_list.append(acc)
     count = count + 1
-    if (acc < 0.985):
-        break
+    if (acc < 0.99):
+        retrain += 1
+        lr = lr / float(2)
+        if (retrain > 2):
+            print("lowest precision")
+            break
+    else:
+        if (retrain != 0):
+            retrain = 0
 
 print (acc)
 

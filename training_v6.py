@@ -18,7 +18,6 @@ class Usage(Exception):
         self.msg = msg
 
 # Parameters
-learning_rate = 1e-4
 training_epochs = 200
 batch_size = 128
 display_step = 1
@@ -258,6 +257,7 @@ def main(argv = None):
             }
             PRUNE_ONLY = False
             TRAIN = True
+            learning_rate = 1e-4
             for item in opts:
                 print (item)
                 opt = item[0]
@@ -276,6 +276,8 @@ def main(argv = None):
                     PRUNE_ONLY = val
                 if (opt == '-test'):
                     TRAIN = val
+                if (opt == '-lr'):
+                    learning_rate = val  
             print('pruning percentage for cov and fc are {},{}'.format(pruning_cov, pruning_fc))
             print('Train values:',TRAIN)
         except getopt.error, msg:
@@ -355,7 +357,7 @@ def main(argv = None):
             # print(weights['cov1'].eval().flatten())
             for key in keys:
                 sess.run(weights[key].assign(weights[key].eval()*weights_mask[key]))
-                sess.run(biases[key].assign(biases[key].eval()*biases_mask[key]))
+                # sess.run(biases[key].assign(biases[key].eval()*biases_mask[key]))
 
             # print(weights_mask['cov1'].flatten())
             # print(weights['cov1'].eval().flatten())
